@@ -73,6 +73,26 @@ public class TestUpOnly {
         checkTilt(new Model(before, 0, 0), new Model(after, 4, 0), Side.NORTH);
     }
 
+    @Test
+    @Tag("up")
+    @DisplayName("Triple merge")
+    public void testUp() {
+        int[][] before = new int[][] {
+                {0, 0, 0, 8},
+                {0, 0, 4, 8},
+                {0, 2, 0, 8},
+                {0, 0, 0, 4},
+        };
+        int[][] after = new int[][] {
+                {0, 2, 4, 16},
+                {0, 0, 0, 8},
+                {0, 0, 0, 4},
+                {0, 0, 0, 0},
+        };
+        checkTilt(new Model(before, 0, 0), new Model(after, 16, 0), Side.NORTH);
+    }
+
+
     /** A tricky merge.
      *
      * The tricky part here is that the 4 tile on the bottom row shouldn't

@@ -210,7 +210,47 @@ public class Model {
      */
     public void tilt(Side side) {
         // TODO: Modify this.board (and if applicable, this.score) to account
-        // for the tilt to the Side SIDE.
+        // for the tilt to the Side SIDE.\
+        board.setViewingPerspective(side);
+        // without merge
+        for (int times = 0; times < board.size() - 1; times++) {
+            for (int col = 0; col < board.size(); col++) {
+                for (int row = board.size() - 2; row >= 0; row--) {
+                    Tile upperTile = board.tile(col, row + 1);
+                    Tile currentTile = board.tile(col, row);
+                    if (upperTile == null && currentTile != null) {
+                        board.move(col, row + 1, currentTile);
+                    }
+                }
+            }
+        }
+        // with merge
+        boolean justMerge = false;
+        for (int col = 0; col < board.size(); col++) {
+            int count = 0; // if a merge accor, the count will add one.
+            int newRow = 0;
+            for (int row = board.size() - 2; row >= 0; row--) {
+                if (justMerge) {
+                    newRow = row + count;
+                    justMerge = false;
+                } else {
+                    newRow = row + count + 1;
+                }
+                Tile upperTile = board.tile(col, newRow);
+                Tile currentTile = board.tile(col, row);
+                if (currentTile != null && upperTile == null) {
+                    board.move(col, newRow, currentTile);
+                } else if (currentTile != null && upperTile.value() == currentTile.value()) {
+                    board.move(col, newRow, currentTile);
+                    this.score += upperTile.value() * 2;
+                    count += 1;
+                    justMerge = true;
+                } else if(currentTile != null) {
+                    board.move(col, row + count, currentTile);
+                }
+            }
+        }
+        board.setViewingPerspective(Side.NORTH);
 
 
         checkGameOver();

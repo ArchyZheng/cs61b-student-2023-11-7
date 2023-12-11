@@ -1,9 +1,59 @@
 package deque;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class LinkedListDeque<T> implements Deque<T> {
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<T> iterator() {
+        return new LinkedListDequeIterator();
+    }
+
+    private class LinkedListDequeIterator<T> implements Iterator<T> {
+        private Node<T> currP;
+        private int currSize;
+
+        public LinkedListDequeIterator() {
+            this.currP = (Node<T>) sentinel;
+            this.currSize = 0;
+        }
+
+        /**
+         * Returns {@code true} if the iteration has more elements.
+         * (In other words, returns {@code true} if {@link #next} would
+         * return an element rather than throwing an exception.)
+         *
+         * @return {@code true} if the iteration has more elements
+         */
+        @Override
+        public boolean hasNext() {
+            return currSize < size;
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         *
+         * @return the next element in the iteration
+         * @throws NoSuchElementException if the iteration has no more elements
+         */
+        @Override
+        public T next() {
+            currP = currP.next;
+            currSize += 1;
+            return currP.item;
+        }
+    }
+
+    private final Iterator<T> iterator = new LinkedListDequeIterator<>();
+
+
     static public class Node<T> {
         public Node<T> prev;
         public Node<T> next;
@@ -79,10 +129,7 @@ public class LinkedListDeque<T> implements Deque<T> {
      */
     @Override
     public boolean isEmpty() {
-        if (this.size == 0) {
-            return true;
-        }
-        return false;
+        return this.size == 0;
     }
 
     /**

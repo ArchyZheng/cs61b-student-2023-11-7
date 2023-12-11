@@ -235,4 +235,18 @@ public class ArrayDeque<T> implements Deque<T> {
             return (T) get(currPosition - 1);
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder SB = new StringBuilder();
+        SB.append('[');
+        for (int index = 0; index < size; index++) {
+            SB.append(get(index).toString());
+            if (index < size - 1) {
+                SB.append(", ");
+            }
+        }
+        SB.append("]");
+        return SB.toString();
+    }
 }

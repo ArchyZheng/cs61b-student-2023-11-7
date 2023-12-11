@@ -6,6 +6,45 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class LinkedListDeque<T> implements Deque<T> {
+    @Override
+    public String toString() {
+        StringBuilder SB = new StringBuilder();
+        SB.append('[');
+        for (int index=0; index<size; index++) {
+            SB.append(get(index).toString());
+            if (index < size - 1) {
+                SB.append(", ");
+            }
+        }
+        SB.append("]");
+        return SB.toString();
+    }
+
+//########################################################
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        LinkedListDeque<T> o = (LinkedListDeque<T>) obj;
+        if (this.size != o.size) {
+            return false;
+        }
+        for (int index = 0; index < size; index++) {
+            if (this.get(index) != o.get(index)) {
+                return false;
+            }
+        }
+        return true;
+    }
+// #################################################################################################
+
     /**
      * Returns an iterator over elements of type {@code T}.
      *
@@ -51,9 +90,7 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
     }
 
-    private final Iterator<T> iterator = new LinkedListDequeIterator<>();
-
-
+    //##################################################################################################
     static public class Node<T> {
         public Node<T> prev;
         public Node<T> next;
@@ -219,4 +256,5 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
         return getR(l.next, i - 1);
     }
+//##################################################################################################
 }

@@ -1,8 +1,11 @@
+import deque.MaxArrayDeque;
 import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.*;
 import deque.Deque;
 import deque.ArrayDeque;
 import deque.LinkedListDeque;
+
+import java.util.Comparator;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -66,5 +69,27 @@ public class MaxArrayDequeTest {
         lld1.addLast("back");
 
         System.out.println(lld1);
+    }
+
+    @Test
+    public void testMaxArrayDequeTest() {
+        Comparator<Integer> comparator = new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                if (o1 > o2) {
+                    return 1;
+                }
+                if (o1.equals(o2)) {
+                    return 0;
+                }
+
+                return -1;
+            }
+        };
+        MaxArrayDeque<Integer> lld1 = new MaxArrayDeque<>(comparator);
+        lld1.addFirst(3);
+        lld1.addFirst(9);
+        lld1.addFirst(8);
+        assertThat(lld1.max()).isEqualTo(9);
     }
 }

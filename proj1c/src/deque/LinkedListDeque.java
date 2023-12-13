@@ -103,7 +103,7 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
     }
 
-    Node<T> sentinel = new Node<>(null, null, null);
+    public Node<T> sentinel = new Node<>(null, null, null);
     int size;
 
     public LinkedListDeque() {

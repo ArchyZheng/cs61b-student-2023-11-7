@@ -1,6 +1,12 @@
 package ngrams;
 
+import edu.princeton.cs.algs4.In;
+
+import java.sql.Time;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import static ngrams.TimeSeries.MAX_YEAR;
 import static ngrams.TimeSeries.MIN_YEAR;
@@ -18,12 +24,44 @@ import static ngrams.TimeSeries.MIN_YEAR;
 public class NGramMap {
 
     // TODO: Add any necessary static/instance variables.
+    TimeSeries counts = new TimeSeries();
+    HashMap<String, TimeSeries> wordsCounts = new HashMap<>();
 
     /**
      * Constructs an NGramMap from WORDSFILENAME and COUNTSFILENAME.
      */
     public NGramMap(String wordsFilename, String countsFilename) {
         // TODO: Fill in this constructor. See the "NGramMap Tips" section of the spec for help.
+        In wordsFile = new In(wordsFilename);
+        In countsFile = new In(countsFilename);
+
+        // read each file into instance data structure.
+        // read counts
+        while (!countsFile.isEmpty()) {
+            String line = countsFile.readLine();
+            String[] splitLine = line.split(",");
+            counts.put(Integer.valueOf(splitLine[0]), Double.valueOf(splitLine[1]));
+        }
+
+        // read words
+        while (!wordsFile.isEmpty()) {
+            String line = wordsFile.readLine();
+            String[] splitLine = line.split("\t");
+            String word = splitLine[0];
+            int year = Integer.parseInt(splitLine[1]);
+            TimeSeries temp = new TimeSeries();
+            if (wordsCounts.get(word) != null) {
+                temp = wordsCounts.get(word);
+            }
+            double number = Double.parseDouble(splitLine[2]) / counts.get(year);
+            temp.put(year, number);
+            if (wordsCounts.get(word) != null) {
+                continue;
+            }
+            wordsCounts.put(word, temp);
+        }
+
+
     }
 
     /**
@@ -46,7 +84,16 @@ public class NGramMap {
      */
     public TimeSeries countHistory(String word) {
         // TODO: Fill in this method.
-        return null;
+        if (wordsCounts.get(word) == null) {
+            return new TimeSeries();
+        }
+        TimeSeries specificWordTS = wordsCounts.get(word);
+        List<Integer> yearList = specificWordTS.years();
+        TimeSeries output = new TimeSeries();
+        for (int year : yearList) {
+            output.put(year, specificWordTS.get(year));
+        }
+        return output;
     }
 
     /**

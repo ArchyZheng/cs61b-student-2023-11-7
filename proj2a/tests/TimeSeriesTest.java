@@ -33,6 +33,7 @@ public class TimeSeriesTest {
                 (Arrays.asList(1991, 1992, 1994, 1995));
 
         assertThat(totalPopulation.years()).isEqualTo(expectedYears);
+        System.out.println(totalPopulation.data());
 
         List<Double> expectedTotal = new ArrayList<>
                 (Arrays.asList(0.0, 100.0, 600.0, 500.0));

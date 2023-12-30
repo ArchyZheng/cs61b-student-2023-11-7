@@ -120,16 +120,16 @@ public class RedBlackTree<T extends Comparable<T>> {
         // TODO: YOUR CODE HERE
         RBTreeNode<T> outputNode = node;
         // Rotate left operation
-        if (node.right != null && !node.right.isBlack) {
+        if (isRed(node.right) && !isRed(node.left)) {
             outputNode = rotateLeft(node);
         }
         // Rotate right operation
-        if (outputNode.left != null && outputNode.left.left != null && !outputNode.left.isBlack && !outputNode.left.left.isBlack) {
-            outputNode = rotateRight(outputNode);
+        if (isRed(node.left) && isRed(node.left.left)) {
+            outputNode = rotateRight(node);
         }
 
         // Color flip
-        if (outputNode.left != null && outputNode.right != null && !outputNode.left.isBlack && !outputNode.right.isBlack) {
+        if (isRed(outputNode.left) && isRed(outputNode.right)) {
             flipColors(outputNode);
         }
 

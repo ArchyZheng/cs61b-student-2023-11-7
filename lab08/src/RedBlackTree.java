@@ -62,23 +62,35 @@ public class RedBlackTree<T extends Comparable<T>> {
     /* Flips the color of node and its children. Assume that NODE has both left
        and right children. */
     void flipColors(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
+        node.isBlack = !node.isBlack;
+        node.left.isBlack = !node.left.isBlack;
+        node.right.isBlack = !node.right.isBlack;
     }
 
     /* Rotates the given node to the right. Returns the new root node of
        this subtree. For this implementation, make sure to swap the colors
        of the new root and the old root!*/
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
-        return null;
+        RBTreeNode<T> temp = node.left;
+        node.left = temp.right;
+        temp.right = node;
+        boolean fromTemp = temp.isBlack;
+        temp.isBlack = node.isBlack;
+        node.isBlack = fromTemp;
+        return temp;
     }
 
     /* Rotates the given node to the left. Returns the new root node of
        this subtree. For this implementation, make sure to swap the colors
        of the new root and the old root! */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
-        // TODO: YOUR CODE HERE
-        return null;
+        RBTreeNode<T> temp = node.right;
+        node.right = temp.left;
+        temp.left = node;
+        boolean fromTemp = temp.isBlack;
+        temp.isBlack = node.isBlack;
+        node.isBlack = fromTemp;
+        return temp;
     }
 
     public void insert(T item) {
@@ -106,14 +118,22 @@ public class RedBlackTree<T extends Comparable<T>> {
         }
 
         // TODO: YOUR CODE HERE
-
+        RBTreeNode<T> outputNode = node;
         // Rotate left operation
-
+        if (node.right != null && !node.right.isBlack) {
+            outputNode = rotateLeft(node);
+        }
         // Rotate right operation
+        if (outputNode.left != null && outputNode.left.left != null && !outputNode.left.isBlack && !outputNode.left.left.isBlack) {
+            outputNode = rotateRight(outputNode);
+        }
 
         // Color flip
+        if (outputNode.left != null && outputNode.right != null && !outputNode.left.isBlack && !outputNode.right.isBlack) {
+            flipColors(outputNode);
+        }
 
-        return null; //fix this return statement
+        return outputNode; //fix this return statement
     }
 
     /* Returns whether the given node is red. Null nodes (children of leaf
